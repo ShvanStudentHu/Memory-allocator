@@ -12,13 +12,16 @@ struct meta_block { // here i define my meta needed what is needed?
 struct meta_block *global_head = NULL;
 
 
-void *find_free_shvspace(struct meta_block *ptr) {
-    global_head = ptr;
-
-    while (global_head->free != 0) {
-        global_head = global_head->next;
+void *find_free_shvspace(struct meta_block *ptr, size_t size) { 
+    struct meta_block *current;
+    current = global_head;
+    
+    while (current->free != 0 && size > current->size && current != NULL) {
+        current = current->next;
     }
-    return ptr;
+
+
+    return current; 
 }
 
 void *shvfree(void *ptr) {
